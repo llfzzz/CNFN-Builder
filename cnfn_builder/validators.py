@@ -4,7 +4,17 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-from .schema import CLAIM_FIELDS, LABELS, PLATFORMS, QUEUE_FIELDS, QUEUE_STATUSES, SAMPLE_FIELDS, TOPIC_CATEGORIES
+from .schema import (
+    CANDIDATE_FIELDS,
+    CANDIDATE_STATUSES,
+    CLAIM_FIELDS,
+    LABELS,
+    PLATFORMS,
+    QUEUE_FIELDS,
+    QUEUE_STATUSES,
+    SAMPLE_FIELDS,
+    TOPIC_CATEGORIES,
+)
 
 
 def validate_claim(row: dict[str, str], row_number: int) -> list[str]:
@@ -54,6 +64,24 @@ def validate_queue(row: dict[str, str], row_number: int) -> list[str]:
     return errors
 
 
+def validate_candidate(row: dict[str, str], row_number: int) -> list[str]:
+    errors: list[str] = []
+    _require_fields(row, CANDIDATE_FIELDS, row_number, errors)
+    _require_value(row, "candidate_id", row_number, errors)
+    _require_value(row, "candidate_url", row_number, errors)
+    _require_url(row, "candidate_url", row_number, errors)
+    _require_value(row, "candidate_text", row_number, errors)
+    _validate_platform(row, row_number, errors, field="platform")
+    _validate_candidate_status(row, row_number, errors)
+    thumbnail_url = row.get("thumbnail_url", "").strip()
+    media_url = row.get("media_url", "").strip()
+    if thumbnail_url:
+        _require_url(row, "thumbnail_url", row_number, errors)
+    if media_url:
+        _require_url(row, "media_url", row_number, errors)
+    return errors
+
+
 def _require_fields(row: dict[str, str], fields: list[str], row_number: int, errors: list[str]) -> None:
     missing = [field for field in fields if field not in row]
     if missing:
@@ -75,10 +103,10 @@ def _require_url(row: dict[str, str], field: str, row_number: int, errors: list[
         errors.append(f"row {row_number}: {field} must be an http(s) URL")
 
 
-def _validate_platform(row: dict[str, str], row_number: int, errors: list[str]) -> None:
-    value = row.get("platform", "").strip()
+def _validate_platform(row: dict[str, str], row_number: int, errors: list[str], field: str = "platform") -> None:
+    value = row.get(field, "").strip()
     if value not in PLATFORMS:
-        errors.append(f"row {row_number}: platform must be one of {', '.join(sorted(PLATFORMS))}")
+        errors.append(f"row {row_number}: {field} must be one of {', '.join(sorted(PLATFORMS))}")
 
 
 def _validate_target_platforms(row: dict[str, str], row_number: int, errors: list[str]) -> None:
@@ -87,7 +115,7 @@ def _validate_target_platforms(row: dict[str, str], row_number: int, errors: lis
         errors.append(f"row {row_number}: target_platforms is required")
         return
     platforms = [platform.strip() for platform in value.split("|") if platform.strip()]
-    invalid = [platform for platform in platforms if platform not in PLATFORMS or platform in {"fact_check_site", "other"}]
+    invalid = [platform for platform in platforms if platform not in PLATFORMS or platform == "fact_check_site"]
     if invalid:
         errors.append(f"row {row_number}: invalid target_platforms values {', '.join(invalid)}")
 
@@ -96,6 +124,12 @@ def _validate_queue_status(row: dict[str, str], row_number: int, errors: list[st
     value = row.get("status", "").strip()
     if value not in QUEUE_STATUSES:
         errors.append(f"row {row_number}: status must be one of {', '.join(sorted(QUEUE_STATUSES))}")
+
+
+def _validate_candidate_status(row: dict[str, str], row_number: int, errors: list[str]) -> None:
+    value = row.get("match_status", "").strip()
+    if value not in CANDIDATE_STATUSES:
+        errors.append(f"row {row_number}: match_status must be one of {', '.join(sorted(CANDIDATE_STATUSES))}")
 
 
 def _validate_topic(row: dict[str, str], row_number: int, errors: list[str]) -> None:

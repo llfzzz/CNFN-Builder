@@ -57,6 +57,7 @@ Fill the templates:
 ```text
 data/claim_bank.csv
 data/collection_queue.csv
+data/candidate_posts.csv
 data/sample_manifest.csv
 ```
 
@@ -64,6 +65,42 @@ Seed the first 50 checked claims and platform-search tasks from 今日辟谣:
 
 ```bash
 cnfn-builder seed-piyao --limit 50
+```
+
+Seed same-topic `true_verified` search tasks:
+
+```bash
+cnfn-builder seed-true-queue --limit 50
+```
+
+Add a manually found candidate:
+
+```bash
+cnfn-builder add-candidate \
+  --queue-id QUEUE_000001 \
+  --claim-id CLAIM_000001 \
+  --platform youtube \
+  --url "https://www.youtube.com/watch?v=..." \
+  --text "title description hashtags"
+```
+
+Capture a public-page screenshot, if Playwright is installed:
+
+```bash
+python -m pip install ".[capture]"
+python -m playwright install chromium
+cnfn-builder capture-url --candidate-id CAND_000001
+```
+
+Accept a reviewed item into the training manifest:
+
+```bash
+cnfn-builder accept-sample \
+  --candidate-id CAND_000001 \
+  --thumbnail-or-screenshot-path assets_local/screenshots/CAND_000001.png \
+  --label-source "中国互联网联合辟谣平台 / 今日辟谣" \
+  --label-source-url "https://www.piyao.org.cn/..." \
+  --collection-date 2026-05-26
 ```
 
 Validate the dataset:
@@ -82,6 +119,18 @@ Export a public-safe manifest:
 
 ```bash
 cnfn-builder export-public --out data/public_manifest.csv
+```
+
+Export CLIP-readable experiment input:
+
+```bash
+cnfn-builder export-clip
+```
+
+Write a thesis audit report:
+
+```bash
+cnfn-builder audit --out reports/dataset_audit.md
 ```
 
 ## Optional Platform Search
@@ -134,9 +183,15 @@ See [docs/platform_compliance.md](docs/platform_compliance.md).
 ## Pilot Collection Loop
 
 Use `data/claim_bank.csv` as the verified-claim layer and
-`data/collection_queue.csv` as the platform-search layer. A row should enter
-`data/sample_manifest.csv` only after you find a public X, YouTube, or TikTok
-post/video page and save a visual asset path for review.
+`data/collection_queue.csv` as the search-task layer. Use
+`data/candidate_posts.csv` for raw candidate URLs and
+`data/sample_manifest.csv` only for accepted, reviewable image-text samples.
+
+Minimum thesis data flow:
+
+```text
+claim -> queue -> candidate -> screenshot/asset -> accepted sample -> audit -> CLIP export
+```
 
 ## Thesis Use
 

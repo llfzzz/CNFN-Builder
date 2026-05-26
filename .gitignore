@@ -21,3 +21,5 @@ data/*local*.csv
 data/*private*.csv
 data/*candidates*.csv
 data/public_manifest.csv
+data/clip_dataset.jsonl
+data/splits/*.jsonl

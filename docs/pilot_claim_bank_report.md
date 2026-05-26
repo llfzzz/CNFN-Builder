@@ -4,6 +4,7 @@ Generated on 2026-05-26 with:
 
 ```bash
 python -m cnfn_builder.cli seed-piyao --limit 50
+python -m cnfn_builder.cli seed-true-queue --limit 50
 python -m cnfn_builder.cli validate
 python -m cnfn_builder.cli stats
 ```
@@ -20,7 +21,9 @@ The first pilot claim bank is seeded from 中国互联网联合辟谣平台 / �
 Files:
 
 - `data/claim_bank.csv`: 50 checked `false_misleading` claims.
-- `data/collection_queue.csv`: 50 platform-search tasks linked to those claims.
+- `data/collection_queue.csv`: 100 search tasks, including 50 false/misleading
+  platform-search tasks and 50 same-topic `true_verified` authority-search tasks.
+- `data/candidate_posts.csv`: empty candidate pool.
 - `data/sample_manifest.csv`: still empty; no training sample is accepted yet.
 
 Topic distribution:
@@ -32,12 +35,19 @@ Topic distribution:
 | `industry_economy` | 9 |
 | `technology_narrative` | 7 |
 
-Label distribution:
+Claim label distribution:
 
 | Label | Count |
 |---|---:|
 | `false_misleading` | 50 |
 | `true_verified` | 0 |
+
+Queue label distribution:
+
+| Label | Count |
+|---|---:|
+| `false_misleading` | 50 |
+| `true_verified` | 50 |
 
 ## Interpretation
 
@@ -54,12 +64,17 @@ For a thesis dataset, the next supplementation should target:
   enterprise rumor-refutation sources
 - `true_verified` samples from authoritative official or news sources
 
+The `true_verified` queue rows are search tasks only. They are not accepted
+samples and do not create labels without a real authoritative URL, text, and
+visual asset.
+
 ## Next Action
 
 Work through `data/collection_queue.csv` from `QUEUE_000001` onward:
 
 1. Search X, YouTube, and TikTok manually or through official APIs.
 2. Save candidate URL in `candidate_post_url`.
-3. Save screenshot, thumbnail, or image under `assets_local/`.
-4. Mark accepted rows as `accepted`.
-5. Copy accepted rows into `data/sample_manifest.csv`.
+3. Add possible matches to `data/candidate_posts.csv`.
+4. Save screenshot, thumbnail, or image under `assets_local/`.
+5. Mark reviewed candidates as `accepted`, `rejected`, or `blocked`.
+6. Move accepted candidates into `data/sample_manifest.csv`.

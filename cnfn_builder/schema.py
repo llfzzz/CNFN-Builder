@@ -41,6 +41,21 @@ QUEUE_FIELDS = [
     "review_notes",
 ]
 
+CANDIDATE_FIELDS = [
+    "candidate_id",
+    "queue_id",
+    "claim_id",
+    "platform",
+    "candidate_url",
+    "candidate_text",
+    "thumbnail_url",
+    "media_url",
+    "published_at",
+    "source_method",
+    "match_status",
+    "notes",
+]
+
 PUBLIC_FIELDS = [
     "sample_id",
     "platform",
@@ -60,6 +75,10 @@ LABELS = {"false_misleading", "true_verified"}
 
 QUEUE_STATUSES = {"todo", "candidate_found", "accepted", "rejected", "blocked"}
 
+CANDIDATE_STATUSES = {"unreviewed", "accepted", "rejected", "blocked"}
+
+LABEL_IDS = {"false_misleading": 0, "true_verified": 1}
+
 TOPIC_CATEGORIES = {
     "policy_politics",
     "livelihood_economy",
@@ -69,6 +88,8 @@ TOPIC_CATEGORIES = {
 
 DEFAULT_DIRS = [
     "data",
+    "data/splits",
+    "reports",
     "assets_local/images",
     "assets_local/screenshots",
     "assets_local/thumbnails",

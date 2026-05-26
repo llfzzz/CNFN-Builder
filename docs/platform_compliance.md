@@ -30,6 +30,12 @@ Relevant policy page:
 
 - https://www.tiktok.com/legal/page/global/terms-of-service-research-api/en
 
+## Screenshots
+
+`capture-url` is a local review aid for one public URL at a time. It must not be
+used to bypass login walls, captchas, private content, rate limits, or platform
+technical restrictions. Failed or restricted pages should be marked `blocked`.
+
 ## Public Repository Rule
 
 The public repository should contain:
@@ -46,5 +52,6 @@ It should not contain:
 - API keys
 - downloaded videos
 - bulk platform content dumps
+- local screenshot or thumbnail assets unless there is a clear thesis-use reason
 - personal or sensitive data
 - private user information
