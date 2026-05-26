@@ -1,0 +1,14 @@
+fact_check_sources:
+  - name: 中国互联网联合辟谣平台
+    url: https://www.piyao.org.cn/
+  - name: 中央网信办
+    url: https://www.cac.gov.cn/
+  - name: 科普中国科学辟谣
+    url: https://piyao.kepuchina.cn/
+  - name: 腾讯较真
+    url: https://news.qq.com/zt2020/page/feiyan.htm
+
+platform_sources:
+  - x
+  - youtube
+  - tiktok

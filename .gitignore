@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.DS_Store
+
+# Local-only platform content. Keep public manifests instead.
+assets_local/images/*
+assets_local/screenshots/*
+assets_local/thumbnails/*
+!assets_local/images/.gitkeep
+!assets_local/screenshots/.gitkeep
+!assets_local/thumbnails/.gitkeep
+
+# Local harvested data and API outputs.
+data/*local*.csv
+data/*private*.csv
+data/*candidates*.csv
+data/public_manifest.csv

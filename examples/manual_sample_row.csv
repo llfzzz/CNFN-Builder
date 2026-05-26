@@ -1,0 +1,2 @@
+sample_id,platform,post_url,post_text,image_path,thumbnail_or_screenshot_path,topic_category,label,label_source,label_source_url,collection_date,notes
+CNFN_000001,youtube,https://www.youtube.com/watch?v=VIDEO_ID,"Example title and description text",,assets_local/thumbnails/CNFN_000001_thumb.jpg,technology_narrative,false_misleading,Example fact-check source,https://example.com/fact-check,2026-05-26,Example only; replace before use.

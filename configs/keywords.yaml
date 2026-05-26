@@ -1,0 +1,16 @@
+policy_politics:
+  - 中国 政策 辟谣
+  - 补贴 通知 假消息
+  - 政务 办事流程 谣言
+livelihood_economy:
+  - 社保 医保 辟谣
+  - 物价 收入 就业 假消息
+  - 民生 补助 谣言
+industry_economy:
+  - 国企 裁员 辟谣
+  - 房地产 政策 假消息
+  - 金融 产业 谣言
+technology_narrative:
+  - 中国 芯片 突破 辟谣
+  - 国产 科技 造假
+  - AI 中国 海外 假消息

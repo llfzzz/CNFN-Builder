@@ -1,0 +1,17 @@
+labels:
+  - false_misleading
+  - true_verified
+
+topic_categories:
+  policy_politics:
+    zh_name: 时政政策
+    scope: 政策、制度、政务通知、补贴、办事流程、公共管理
+  livelihood_economy:
+    zh_name: 民生经济
+    scope: 就业、收入、物价、社保、医保、教育、住房、底层生活、社会事件
+  industry_economy:
+    zh_name: 经济产业
+    scope: 国企、金融、房地产、产业政策、制造业、供应链、平台经济
+  technology_narrative:
+    zh_name: 科技叙事
+    scope: 国产科技、海外科技、芯片、AI、航天、强国叙事、爱国主题绑定
