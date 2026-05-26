@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-from .schema import CLAIM_FIELDS, LABELS, PLATFORMS, SAMPLE_FIELDS, TOPIC_CATEGORIES
+from .schema import CLAIM_FIELDS, LABELS, PLATFORMS, QUEUE_FIELDS, QUEUE_STATUSES, SAMPLE_FIELDS, TOPIC_CATEGORIES
 
 
 def validate_claim(row: dict[str, str], row_number: int) -> list[str]:
@@ -38,6 +38,22 @@ def validate_sample(row: dict[str, str], row_number: int, check_assets: bool = F
     return errors
 
 
+def validate_queue(row: dict[str, str], row_number: int) -> list[str]:
+    errors: list[str] = []
+    _require_fields(row, QUEUE_FIELDS, row_number, errors)
+    _require_value(row, "queue_id", row_number, errors)
+    _require_value(row, "claim_id", row_number, errors)
+    _validate_topic(row, row_number, errors)
+    _validate_label(row, row_number, errors)
+    _validate_target_platforms(row, row_number, errors)
+    _require_value(row, "search_queries", row_number, errors)
+    _validate_queue_status(row, row_number, errors)
+    candidate_url = row.get("candidate_post_url", "").strip()
+    if candidate_url:
+        _require_url(row, "candidate_post_url", row_number, errors)
+    return errors
+
+
 def _require_fields(row: dict[str, str], fields: list[str], row_number: int, errors: list[str]) -> None:
     missing = [field for field in fields if field not in row]
     if missing:
@@ -63,6 +79,23 @@ def _validate_platform(row: dict[str, str], row_number: int, errors: list[str]) 
     value = row.get("platform", "").strip()
     if value not in PLATFORMS:
         errors.append(f"row {row_number}: platform must be one of {', '.join(sorted(PLATFORMS))}")
+
+
+def _validate_target_platforms(row: dict[str, str], row_number: int, errors: list[str]) -> None:
+    value = row.get("target_platforms", "").strip()
+    if not value:
+        errors.append(f"row {row_number}: target_platforms is required")
+        return
+    platforms = [platform.strip() for platform in value.split("|") if platform.strip()]
+    invalid = [platform for platform in platforms if platform not in PLATFORMS or platform in {"fact_check_site", "other"}]
+    if invalid:
+        errors.append(f"row {row_number}: invalid target_platforms values {', '.join(invalid)}")
+
+
+def _validate_queue_status(row: dict[str, str], row_number: int, errors: list[str]) -> None:
+    value = row.get("status", "").strip()
+    if value not in QUEUE_STATUSES:
+        errors.append(f"row {row_number}: status must be one of {', '.join(sorted(QUEUE_STATUSES))}")
 
 
 def _validate_topic(row: dict[str, str], row_number: int, errors: list[str]) -> None:

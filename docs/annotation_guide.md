@@ -4,10 +4,12 @@
 
 1. Start from a fact-checking or authoritative source.
 2. Extract one factual claim.
-3. Assign one topic category.
-4. Search public social platforms for matching image-text samples.
-5. Keep only samples with text plus an image, thumbnail, or screenshot.
-6. Validate that the label source supports the assigned label.
+3. Add the claim to `data/claim_bank.csv`.
+4. Add platform-search work to `data/collection_queue.csv`.
+5. Search public social platforms for matching image-text samples.
+6. Keep only samples with text plus an image, thumbnail, or screenshot.
+7. Move the row into `data/sample_manifest.csv` only after URL, asset path,
+   label source, and collection date are all reviewable.
 
 ## Labels
 
@@ -36,3 +38,13 @@ Exclude samples that:
 - lack any image, thumbnail, or screenshot
 - expose private personal information
 - cannot be reviewed later from the stored URL and label source
+
+## Queue Status
+
+- `todo`: claim is verified, but no platform sample has been accepted.
+- `candidate_found`: a possible platform URL has been found and needs review.
+- `accepted`: the platform URL and visual asset are good enough for
+  `sample_manifest.csv`.
+- `rejected`: the candidate does not match the claim or lacks usable visuals.
+- `blocked`: the platform source is inaccessible, deleted, or requires access
+  that cannot be obtained compliantly.

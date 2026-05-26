@@ -1,4 +1,4 @@
-from cnfn_builder.validators import validate_claim, validate_sample
+from cnfn_builder.validators import validate_claim, validate_queue, validate_sample
 
 
 def test_valid_claim():
@@ -33,3 +33,20 @@ def test_invalid_sample_requires_visual_asset():
     }
     errors = validate_sample(row, 2)
     assert any("image_path or thumbnail_or_screenshot_path" in error for error in errors)
+
+
+def test_valid_queue_row():
+    row = {
+        "queue_id": "QUEUE_000001",
+        "claim_id": "CLAIM_000001",
+        "topic_category": "policy_politics",
+        "label": "false_misleading",
+        "target_platforms": "x|youtube|tiktok",
+        "search_queries": "example; example 图片",
+        "preferred_modalities": "post_text+image|title+thumbnail|screenshot",
+        "status": "todo",
+        "candidate_post_url": "",
+        "candidate_asset_path": "",
+        "review_notes": "",
+    }
+    assert validate_queue(row, 2) == []

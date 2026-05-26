@@ -56,7 +56,14 @@ Fill the templates:
 
 ```text
 data/claim_bank.csv
+data/collection_queue.csv
 data/sample_manifest.csv
+```
+
+Seed the first 50 checked claims and platform-search tasks from 今日辟谣:
+
+```bash
+cnfn-builder seed-piyao --limit 50
 ```
 
 Validate the dataset:
@@ -111,6 +118,7 @@ Commit to GitHub:
 - platform content IDs
 - labels and label-source URLs
 - public-safe manifests
+- claim banks and collection queues grounded in public label-source URLs
 
 Do not commit:
 
@@ -123,6 +131,13 @@ Do not commit:
 
 See [docs/platform_compliance.md](docs/platform_compliance.md).
 
+## Pilot Collection Loop
+
+Use `data/claim_bank.csv` as the verified-claim layer and
+`data/collection_queue.csv` as the platform-search layer. A row should enter
+`data/sample_manifest.csv` only after you find a public X, YouTube, or TikTok
+post/video page and save a visual asset path for review.
+
 ## Thesis Use
 
 The intended thesis wording is conservative:
@@ -133,3 +148,6 @@ The intended thesis wording is conservative:
 > fact-checking, or authoritative sources.
 
 See [docs/thesis_usage.md](docs/thesis_usage.md).
+
+The first pilot claim-bank run is summarized in
+[docs/pilot_claim_bank_report.md](docs/pilot_claim_bank_report.md).

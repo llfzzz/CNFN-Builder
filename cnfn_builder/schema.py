@@ -27,6 +27,20 @@ SAMPLE_FIELDS = [
     "notes",
 ]
 
+QUEUE_FIELDS = [
+    "queue_id",
+    "claim_id",
+    "topic_category",
+    "label",
+    "target_platforms",
+    "search_queries",
+    "preferred_modalities",
+    "status",
+    "candidate_post_url",
+    "candidate_asset_path",
+    "review_notes",
+]
+
 PUBLIC_FIELDS = [
     "sample_id",
     "platform",
@@ -43,6 +57,8 @@ PUBLIC_FIELDS = [
 PLATFORMS = {"x", "youtube", "tiktok", "fact_check_site", "other"}
 
 LABELS = {"false_misleading", "true_verified"}
+
+QUEUE_STATUSES = {"todo", "candidate_found", "accepted", "rejected", "blocked"}
 
 TOPIC_CATEGORIES = {
     "policy_politics",
